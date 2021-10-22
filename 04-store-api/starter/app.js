@@ -6,6 +6,7 @@ require("express-async-errors");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const NotFoundMiddleware = require("./middleware/not-found");
 const connectDB = require("./db/connect");
+const productsRouter = require("./routes/products");
 
 //Express.
 const express = require("express");
@@ -16,8 +17,14 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.status(200).send("<h1>Store API is live!</h1>");
+  res
+    .status(200)
+    .send(
+      "<h1>Store API is live!</h1><a href='/products'>See all products</a> "
+    );
 });
+
+app.use("/api/v1/products", productsRouter);
 
 app.use(NotFoundMiddleware);
 app.use(errorHandlerMiddleware);
