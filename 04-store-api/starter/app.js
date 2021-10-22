@@ -2,11 +2,11 @@
 require("dotenv").config();
 require("express-async-errors");
 
-//Imports.
+//My imports.
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const NotFoundMiddleware = require("./middleware/not-found");
 const connectDB = require("./db/connect");
-const productsRouter = require("./routes/products");
+const productsRouter = require("./routes/productsRouter");
 
 //Express.
 const express = require("express");
