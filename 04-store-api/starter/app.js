@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res
     .status(200)
     .send(
-      "<h1>Store API is live!</h1><a href='/products'>See all products</a> "
+      "<h1>Store API is live!</h1><a href='/api/v1/products'>See all products</a>"
     );
 });
 
