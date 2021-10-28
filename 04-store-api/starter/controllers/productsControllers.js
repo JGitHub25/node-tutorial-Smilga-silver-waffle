@@ -1,7 +1,7 @@
 const ProductsModel = require("../models/productModel");
 
 const getAllProductsStatic = async (req, res) => {
-  const products = await ProductsModel.find({}).select("name price").limit(3);
+  const products = await ProductsModel.find({ price: { $eq: 109 } });
   res.status(200).json({
     msg: "Products testing route.",
     nbHits: products.length,
@@ -10,7 +10,8 @@ const getAllProductsStatic = async (req, res) => {
 };
 const getAllProducts = async (req, res) => {
   //Se extraen la propiedades que interesan.
-  const { featured, company, name, sort, selectors } = req.query;
+  const { featured, company, name, sort, selectors, numericFilters } =
+    req.query;
   const queryObj = {};
   //Se verifica si las propiedades se pasaron/existen.
   if (featured) {
@@ -22,6 +23,34 @@ const getAllProducts = async (req, res) => {
   if (name) {
     queryObj.name = { $regex: `^${name}`, $options: "i" };
   }
+  //Si se pasaron numericFilters...
+  if (numericFilters) {
+    //Para hacerlo más amigable, el usuario ingreso los operadores tradicionales. Los convertimos a los que usa Mongoose.
+    const operatorMap = {
+      ">": "$gt",
+      ">=": "$gte",
+      "=": "$eq",
+      "<": "$lt",
+      "<=": "$lte",
+    };
+    const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+    let filters = numericFilters.replace(
+      regEx,
+      (match) => `-${operatorMap[match]}-`
+    );
+    console.log(filters);
+    //Nos aseguramos de aplicar el filtro numérico sólo a las propiedades numéricas -price y rating en este caso-.
+    //Procesamos más la query string para que quede en la sintáxis que necesita Mongoose.
+    //Pasamos la condición al queryObj.
+    const options = ["price", "rating"];
+    filters = filters.split(",").forEach((item) => {
+      const [field, operator, value] = item.split("-");
+      if (options.includes(field)) {
+        queryObj[field] = { [operator]: Number(value) };
+      }
+    });
+  }
+
   console.log("queryObject");
   console.log(queryObj);
   //No se pasa req.query directamente sino otro objeto.
