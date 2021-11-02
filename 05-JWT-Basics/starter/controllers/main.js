@@ -1,4 +1,4 @@
-const CustomErrorAPI = require("../errors/custom-error");
+const { BadRequest } = require("../errors/index");
 const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
@@ -6,7 +6,7 @@ const login = async (req, res) => {
   console.log(username, password);
 
   if (!username || !password) {
-    throw new CustomErrorAPI(`A username and password must be provided`, 400);
+    throw new BadRequest(`A username and password must be provided`);
   }
   const id = new Date().getDate();
 
