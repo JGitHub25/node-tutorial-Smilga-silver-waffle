@@ -2,6 +2,7 @@ require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
 const app = express();
+const authUserMiddleware = require("./middleware/authentication");
 
 //DB.
 const connectDB = require("./db/connect");
@@ -20,7 +21,7 @@ app.use(express.json());
 // routes
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", jobsRouter);
+app.use("/api/v1/jobs", authUserMiddleware, jobsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
