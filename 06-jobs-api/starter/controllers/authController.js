@@ -1,11 +1,10 @@
 const UserModel = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
-const bcrypt = require("bcryptjs");
-const BadRequestError = require("../errors/bad-request");
 
 const register = async (req, res) => {
   const user = await UserModel.create({ ...req.body });
-  res.status(StatusCodes.CREATED).json({ user });
+  const token = user.createJWT();
+  res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
 };
 
 const login = async (req, res) => {
