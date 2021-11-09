@@ -44,6 +44,6 @@ UserSchema.methods.checkPassword = async function (sentPassword) {
   return isMatch;
 };
 
-const UserModel = new mongoose.model("User", UserSchema);
+const UserModel = mongoose.model("User", UserSchema);
 
 module.exports = UserModel;
