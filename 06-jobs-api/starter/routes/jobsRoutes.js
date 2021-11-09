@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllJobs,
-  getOneJob,
+  getSingleJob,
   createJob,
   updateJob,
   deleteJob,
@@ -10,8 +10,8 @@ const {
 
 router.post("/", createJob);
 router.get("/", getAllJobs);
-router.get("/:id", getOneJob);
+router.get("/:id", getSingleJob);
 router.patch("/:id", updateJob);
-router.get("/:id", deleteJob);
+router.delete("/:id", deleteJob);
 
 module.exports = router;
