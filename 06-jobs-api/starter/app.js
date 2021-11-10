@@ -2,7 +2,7 @@ require("dotenv").config();
 require("express-async-errors");
 
 //Security packages.
-const rateLimiter = require("express-rate-limiter");
+const rateLimiter = require("express-rate-limit");
 const helmet = require("helmet");
 const cors = require("cors");
 const xss = require("xss-clean");
